@@ -29,8 +29,8 @@ Grille::Grille()
     }
 }
 
-Animal Grille::getAnimalAtCoord(Coord c) {
-    return map[c.getRow()][c.getCol()];
+Animal Grille::getAnimalAtCoord(int row, int col) {
+    return map[row][col];
 }
 void Grille::setAnimalAtCoord(Coord c, Type t) {
     map[c.getRow()][c.getCol()] = *(new Animal(t, c));
@@ -40,7 +40,7 @@ void Grille::debug() {
     for(int i = 0; i < 53; i++) {
         QString helper = "";
         for(int j = 0; j < 127; j++) {
-            Animal a = getAnimalAtCoord(*(new Coord(i, j)));
+            Animal a = getAnimalAtCoord(i, j);
             helper += a.toString();
             helper += " ";
         }

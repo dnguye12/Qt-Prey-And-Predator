@@ -10,7 +10,7 @@ class Grille
 public:
     Grille();
 
-    Animal getAnimalAtCoord(Coord c);
+    Animal getAnimalAtCoord(int row, int col);
     void setAnimalAtCoord(Coord c, Type t);
 
     void debug();
