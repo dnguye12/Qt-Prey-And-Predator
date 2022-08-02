@@ -1,6 +1,7 @@
 #ifndef COORD_H
 #define COORD_H
 
+#include <QVector>
 
 class Coord
 {
@@ -13,6 +14,8 @@ public:
 
     void setRow(int x);
     void setCol(int y);
+
+    QVector<Coord> getVoisin();
 
 private:
     int row;

@@ -33,6 +33,10 @@ void Animal::setCoord(int x, int y) {
     coord.setRow(x);
 }
 
+void Animal::setCoord(Coord c) {
+       coord =  c;
+}
+
 //rabbit functions
 int Animal::getProbBirthLapin() {
     return ProbBirthLapin;

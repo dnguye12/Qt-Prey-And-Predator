@@ -27,6 +27,8 @@ private slots:
 
     void on_BtnRestart_clicked();
 
+    void on_BtnPause_clicked();
+
 private:
     Ui::MainWindow *ui;
     Grille g;

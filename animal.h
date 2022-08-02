@@ -18,6 +18,7 @@ public:
 
     Coord getCoord();
     void setCoord(int x, int y);
+    void setCoord(Coord c);
 
     int getProbBirthLapin();
     int getMinFreeBirthLapin();

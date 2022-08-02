@@ -34,3 +34,20 @@ void Coord::setCol(int y) {
     }
     col = y;
 }
+
+QVector<Coord> Coord::getVoisin() {
+    QVector<Coord> helper = {};
+    int r = this->getRow();
+    int c = this->getCol();
+
+    for(int i = r - 1; i <= r+ 1; i++) {
+        for(int j = c - 1; j <= c + 1; j++) {
+            if(i < 0 or j < 0 or i > 52 or j > 126) {
+                continue;
+            }else {
+                helper.append( *(new Coord(i, j)) );
+            }
+        }
+    }
+    return helper;
+}

@@ -41,14 +41,14 @@ void MainWindow::initBoard() {
             cell->setEnabled(false);
             cell->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
             cell->setMaximumSize(10,10);
-            if(g.getAnimalAtCoord(i, j).getType() == Type::fox) {
+            if(g.getAnimalAtCoord(i, j)->getType() == Type::fox) {
                 cell->setStyleSheet("background-color: red;"
                                     "border: none;");
-            } else if(g.getAnimalAtCoord(i, j).getType() == Type::rabbit) {
+            } else if(g.getAnimalAtCoord(i, j)->getType() == Type::rabbit) {
                 cell->setStyleSheet("background-color: cyan;"
                                     "border: none;");
             }else {
-                cell->setStyleSheet("background-color: rgb(26, 27, 29);"
+                cell->setStyleSheet("background-color: rgb(83, 83, 83);"
                                     "border: none;");
             }
             ui->gridLayout->addWidget(cell, i, j, 1, 1);
@@ -62,14 +62,14 @@ void MainWindow::updateGrid(Grille g) {
             QLayoutItem *item = ui->gridLayout->itemAtPosition(i,j);
             QWidget* widget = item->widget();
             QPushButton* cell = dynamic_cast<QPushButton*>(widget);
-            if(g.getAnimalAtCoord(i, j).getType() == Type::fox) {
+            if(g.getAnimalAtCoord(i, j)->getType() == Type::fox) {
                 cell->setStyleSheet("background-color: red;"
                                     "border: none;");
-            } else if(g.getAnimalAtCoord(i, j).getType() == Type::rabbit) {
+            } else if(g.getAnimalAtCoord(i, j)->getType() == Type::rabbit) {
                 cell->setStyleSheet("background-color: cyan;"
                                     "border: none;");
             }else {
-                cell->setStyleSheet("background-color: rgb(26, 27, 29);"
+                cell->setStyleSheet("background-color: rgb(83, 83, 83);"
                                     "border: none;");
             }
         }
@@ -86,6 +86,13 @@ void MainWindow::on_BtnQuit_clicked()
 void MainWindow::on_BtnRestart_clicked()
 {
     g = Grille();
+    updateGrid(g);
+}
+
+
+void MainWindow::on_BtnPause_clicked()
+{
+    g.updateGrille();
     updateGrid(g);
 }
 
