@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>Square Buttons/On Off Square Button.png</file>
+        <file>Square Buttons/Pause Square Button.png</file>
+        <file>Square Buttons/Play Square Button.png</file>
+        <file>Square Buttons/Audio Square Button.png</file>
+        <file>Square Buttons/Return Square Button.png</file>
+    </qresource>
+</RCC>
