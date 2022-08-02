@@ -15,6 +15,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
+    //functions
+    void initBoard();
+
 private slots:
     void on_BtnQuit_clicked();
 
