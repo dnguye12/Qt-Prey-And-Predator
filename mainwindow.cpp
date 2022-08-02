@@ -4,13 +4,16 @@
 #include <QPushButton>
 #include <QSizePolicy>
 
+#include <grille.h>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    initBoard();
+    //initBoard();
+    Grille g = Grille();
 }
 
 MainWindow::~MainWindow()
@@ -19,15 +22,15 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initBoard() {
-    for(int i = 1; i <= 53; i++) {
-        for(int j = 1; j <= 126; j++) {
+    for(int i = 0; i < 53; i++) {
+        for(int j = 0; j < 127; j++) {
             QPushButton *cell = new QPushButton("");
             cell->setEnabled(false);
             cell->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
             cell->setMaximumSize(10,10);
             cell->setStyleSheet("background-color: rgb(26, 27, 29);"
                                 "border: none;");
-            ui->gridLayout->addWidget(cell, i-1, j-1, 1, 1);
+            ui->gridLayout->addWidget(cell, i, j, 1, 1);
         }
     }
 }
