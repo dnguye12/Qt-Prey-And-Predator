@@ -5,6 +5,7 @@
 
 #include <animal.h>
 #include <population.h>
+#include <QPair>
 
 class Grille
 {
@@ -21,6 +22,8 @@ public:
     QVector<Animal*> voisinFox(Coord c);
 
     void updateGrille();
+
+    QPair<int,int> popCount();
 
     void debug();
 

@@ -78,3 +78,4 @@ void Population::changeCoord(int id, Coord c) {
         a->setCoord(c.getRow(), c.getCol());
     }
 }
+

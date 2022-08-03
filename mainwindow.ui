@@ -32,6 +32,9 @@
         <height>550</height>
        </size>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <layout class="QGridLayout" name="gridLayout">
        <property name="leftMargin">
         <number>0</number>
@@ -216,7 +219,28 @@
         <height>362</height>
        </size>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="RabPop">
+         <property name="styleSheet">
+          <string notr="true">color: white;</string>
+         </property>
+         <property name="text">
+          <string>Rabbit Population: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="FoxPop">
+         <property name="styleSheet">
+          <string notr="true">color: white;</string>
+         </property>
+         <property name="text">
+          <string>Fox Population: </string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>

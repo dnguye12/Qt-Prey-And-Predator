@@ -38,7 +38,7 @@ private:
     Coord coord;
     int Id;
 
-    int ProbBirthLapin = 1;
+    int ProbBirthLapin = 30;
     int MinFreeBirthLapin = 4;
 
 

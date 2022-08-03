@@ -48,12 +48,16 @@ void MainWindow::initBoard() {
                 cell->setStyleSheet("background-color: cyan;"
                                     "border: none;");
             }else {
-                cell->setStyleSheet("background-color: rgb(83, 83, 83);"
+                cell->setStyleSheet("background-color: rgb(40, 40, 40);"
                                     "border: none;");
             }
             ui->gridLayout->addWidget(cell, i, j, 1, 1);
         }
     }
+
+    QPair<int,int> popCount = g.popCount();
+    ui->RabPop->setText("Rabbit Population: " + QString::number(popCount.first));
+    ui->FoxPop->setText("Fox Population: " + QString::number(popCount.second));
 }
 
 void MainWindow::updateGrid(Grille g) {
@@ -69,11 +73,14 @@ void MainWindow::updateGrid(Grille g) {
                 cell->setStyleSheet("background-color: cyan;"
                                     "border: none;");
             }else {
-                cell->setStyleSheet("background-color: rgb(83, 83, 83);"
+                cell->setStyleSheet("background-color: rgb(40, 40, 40);"
                                     "border: none;");
             }
         }
     }
+    QPair<int,int> popCount = g.popCount();
+    ui->RabPop->setText(QString("Rabbit Population: " + QString::number(popCount.first)));
+    ui->FoxPop->setText(QString("Fox Population: " + QString::number(popCount.second)));
 }
 
 

@@ -99,34 +99,44 @@ QVector<Animal*> Grille::voisinFox(Coord c) {
     return helper;
 }
 
-void Grille::updateGrille() {
-    srand(time(NULL));
-    /*
-    for(int i = 0; i < 53; i++) {
-        for(int j = 0; j < 127; j++) {
-            if(getAnimalAtCoord(i, j)->getType() == Type::rabbit) {
-                Animal* a = getAnimalAtCoord(i, j);
-                Coord c = a->getCoord();
-                QVector<Animal*> cVide = voisinVide(c);
-
-                if(cVide.size() > 0) {
-
-                    int choice = rand() % (cVide.size());
-                    a->setCoord(cVide[choice]->getCoord());
-                    setAnimalAtCoord(c, Type::none, -1);
-                    setAnimalAtCoord(a->getCoord(), a);
-                }
-                else {
-                    continue;
-                }
-            }
+QPair<int,int> Grille::popCount() {
+    int countRab = 0;
+    int countFox = 0;
+    for(int i = 0; i < pop.size(); i++) {
+        if(pop.getByIndex(i)->getType() == Type::fox) {
+            countFox++;
+        }else if (pop.getByIndex(i)->getType() == Type::rabbit) {
+            countRab++;
         }
     }
-    */
+    QPair<int,int> helper;
+    helper.first = countRab;
+    helper.second = countFox;
+    return helper;
+}
+
+
+void Grille::updateGrille() {
+    srand(time(NULL));
     QVector<int> moved = {};
     for(int i = 0; i < pop.size(); i++) {
         Animal* a = pop.getByIndex(i);
         if(a->getType() == Type::rabbit and not moved.contains(a->getId())) {
+            Coord c = a->getCoord();
+            int id = a->getId();
+            moved.append(id);
+            QVector<Animal*> cVide = voisinVide(c);
+            if(cVide.size() > 0) {
+                int choice = rand() % (cVide.size());
+                pop.changeCoord(id, cVide[choice]->getCoord());
+                //a = pop.getByIndex(i);
+                //a->setCoord(cVide[choice]->getCoord());
+                setAnimalAtCoord(c, Type::none, -1);
+                setAnimalAtCoord(a->getCoord(), a);
+            }else {
+                continue;
+            }
+        }else if(a->getType() == Type::fox and not moved.contains(a->getId())) {
             Coord c = a->getCoord();
             int id = a->getId();
             moved.append(id);

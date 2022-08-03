@@ -3,6 +3,7 @@
 
 #include "animal.h"
 
+
 class Population
 {
 public:
@@ -23,6 +24,8 @@ public:
     void del(int id);
 
     void changeCoord(int id, Coord c);
+
+
 
 private:
     QVector<Animal *> pop;
