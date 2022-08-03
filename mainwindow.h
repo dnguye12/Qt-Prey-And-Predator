@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "grille.h"
 
+#include <QTimer>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -29,8 +31,14 @@ private slots:
 
     void on_BtnPause_clicked();
 
+    void updateDisplay();
+
 private:
     Ui::MainWindow *ui;
     Grille g;
+    bool paused = true;
+    int timerTime;
+    int oldTimerTime;
+    QTimer *timer = new QTimer(this);
 };
 #endif // MAINWINDOW_H

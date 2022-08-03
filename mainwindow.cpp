@@ -5,6 +5,7 @@
 #include <QSizePolicy>
 #include <QScreen>
 
+
 #include <grille.h>
 
 
@@ -13,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    timerTime = 0;
+    oldTimerTime = timerTime;
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateDisplay);
 
     QScreen *screen = ui->centralwidget->screen();
     QRect  screenGeometry = screen->geometry();
@@ -96,10 +101,24 @@ void MainWindow::on_BtnRestart_clicked()
     updateGrid(g);
 }
 
+void MainWindow::updateDisplay() {
+    g.updateGrille();
+    updateGrid(g);
+}
+
 
 void MainWindow::on_BtnPause_clicked()
 {
-    g.updateGrille();
-    updateGrid(g);
+    if(not paused) {
+        paused = true;
+        timerTime = 2147483647;
+        timer->start(timerTime);
+        return;
+    }else {
+        paused = false;
+        timerTime = oldTimerTime;
+        timer->start(timerTime);
+    }
+
 }
 
