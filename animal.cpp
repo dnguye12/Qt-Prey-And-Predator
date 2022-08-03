@@ -1,9 +1,10 @@
 #include "animal.h"
 #include <QDebug>
 
-Animal::Animal(Type t, Coord c) {
+Animal::Animal(Type t, int id, Coord c) {
     type = t;
     coord = c;
+    Id = id;
 }
 
 QString Animal::toString() {
@@ -14,6 +15,14 @@ QString Animal::toString() {
     }else {
         return " ";
     }
+}
+
+int Animal::getId() {
+    return Id;
+}
+
+void Animal::setId(int i) {
+    Id = i ;
 }
 
 Type Animal::getType() {

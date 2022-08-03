@@ -10,8 +10,11 @@ enum class Type {rabbit, fox, none};
 class Animal
 {
 public:
-    Animal(Type t, Coord c);
+    Animal(Type t, int id, Coord c);
     QString toString();
+
+    int getId();
+    void setId(int i);
 
     Type getType();
     void setType(Type t);
@@ -33,8 +36,9 @@ public:
 private:
     Type type;
     Coord coord;
+    int Id;
 
-    int ProbBirthLapin = 30;
+    int ProbBirthLapin = 1;
     int MinFreeBirthLapin = 4;
 
 

@@ -5,11 +5,10 @@
 #include <time.h>
 #include <QDebug>
 
-Grille::Grille()
-{
+Grille::Grille()  {
     QVector<Animal*> helper;
     for(int i = 0; i < 127; i++) {
-        helper.append((new Animal(Type::none, *(new Coord(0,0)))));
+        helper.append((new Animal(Type::none, -1, *(new Coord(0,0)))));
     }
     for(int i = 0; i < 53; i++) {
         map.append(helper);
@@ -17,12 +16,19 @@ Grille::Grille()
     srand(time(NULL));
     for(int i = 0; i < 53; i++) {
         for(int j = 0; j < 127; j++) {
-            Animal* a = (new Animal(Type::none, *(new Coord(i,j))));
+            Animal* a = (new Animal(Type::none, -1, *(new Coord(i,j))));
             int rate = rand() % 100 + 1;
-            if(rate <= a->getProbBirthLapin()) {
-                a->setType(Type::rabbit);
-            }else if(rate > a->getProbBirthLapin() and rate <= a->getProbBirthLapin() + a->getProbBirthRenard()) {
-                a->setType(Type::fox);
+            if(rate <= a->getProbBirthLapin() + a->getProbBirthRenard()) {
+                if(pop.size() < 53 * 127) {
+                    if(rate <= a->getProbBirthLapin()) {
+                        a->setType(Type::rabbit);
+
+                    }else if(rate > a->getProbBirthLapin() and rate <= a->getProbBirthLapin() + a->getProbBirthRenard()) {
+                        a->setType(Type::fox);
+                    }
+                    int idx = pop.set(a->getType(), a->getCoord());
+                    a->setId(idx);
+                }
             }
             map[i][j] = a;
         }
@@ -37,8 +43,8 @@ Animal* Grille::getAnimalAtCoord(Coord c) {
     return map[c.getRow()][c.getCol()];
 }
 
-void Grille::setAnimalAtCoord(Coord c, Type t) {
-    map[c.getRow()][c.getCol()] = (new Animal(t, c));
+void Grille::setAnimalAtCoord(Coord c, Type t, int idx) {
+    map[c.getRow()][c.getCol()] = (new Animal(t,idx,  c));
 }
 
 void Grille::setAnimalAtCoord(Coord c, Animal* a) {
@@ -95,6 +101,7 @@ QVector<Animal*> Grille::voisinFox(Coord c) {
 
 void Grille::updateGrille() {
     srand(time(NULL));
+    /*
     for(int i = 0; i < 53; i++) {
         for(int j = 0; j < 127; j++) {
             if(getAnimalAtCoord(i, j)->getType() == Type::rabbit) {
@@ -106,12 +113,33 @@ void Grille::updateGrille() {
 
                     int choice = rand() % (cVide.size());
                     a->setCoord(cVide[choice]->getCoord());
-                    setAnimalAtCoord(c, Type::none);
+                    setAnimalAtCoord(c, Type::none, -1);
                     setAnimalAtCoord(a->getCoord(), a);
                 }
                 else {
                     continue;
                 }
+            }
+        }
+    }
+    */
+    QVector<int> moved = {};
+    for(int i = 0; i < pop.size(); i++) {
+        Animal* a = pop.getByIndex(i);
+        if(a->getType() == Type::rabbit and not moved.contains(a->getId())) {
+            Coord c = a->getCoord();
+            int id = a->getId();
+            moved.append(id);
+            QVector<Animal*> cVide = voisinVide(c);
+            if(cVide.size() > 0) {
+                int choice = rand() % (cVide.size());
+                pop.changeCoord(id, cVide[choice]->getCoord());
+                //a = pop.getByIndex(i);
+                //a->setCoord(cVide[choice]->getCoord());
+                setAnimalAtCoord(c, Type::none, -1);
+                setAnimalAtCoord(a->getCoord(), a);
+            }else {
+                continue;
             }
         }
     }

@@ -14,13 +14,15 @@ SOURCES += \
     coord.cpp \
     grille.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    population.cpp
 
 HEADERS += \
     animal.h \
     coord.h \
     grille.h \
-    mainwindow.h
+    mainwindow.h \
+    population.h
 
 FORMS += \
     mainwindow.ui
