@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     oldTimerTime = timerTime;
     minSpeed= true;
     connect(timer, &QTimer::timeout, this, &MainWindow::updateDisplay);
+    ui->BtnSpeedUp->setIcon(QIcon(":/images/Square Buttons/X Square Button.png"));
 
     QScreen *screen = ui->centralwidget->screen();
     QRect  screenGeometry = screen->geometry();
@@ -43,7 +44,7 @@ void MainWindow::initBoard() {
     g = Grille();
 
     QGraphicsScene *scene;
-    QImage image(127, 53, QImage::Format_RGB32);
+    QImage image(63, 26, QImage::Format_RGB32);
     QRgb red;
     QRgb cyan;
     QRgb black;
@@ -66,7 +67,7 @@ void MainWindow::initBoard() {
             image.setPixel(a->getCoord().getCol(), a->getCoord().getRow(), cyan);
         }
     }
-    image = image.scaledToHeight(530, Qt::FastTransformation);
+    image = image.scaledToHeight(520, Qt::FastTransformation);
 
 
     scene = new QGraphicsScene(this);
@@ -82,7 +83,7 @@ void MainWindow::initBoard() {
 
 void MainWindow::updateGrid(Grille g) {
     QGraphicsScene *scene;
-    QImage image(127, 53, QImage::Format_RGB32);
+    QImage image(63, 26, QImage::Format_RGB32);
     QRgb red;
     QRgb cyan;
     QRgb black;
@@ -94,6 +95,9 @@ void MainWindow::updateGrid(Grille g) {
     image.fill(black);
     Population pop = g.getPop();
 
+    if(pop.size() == 0) {
+        on_BtnPause_clicked();
+    }
     for(int i = 0; i < pop.size(); i++) {
         if(pop.getByIndex(i)->getType() == Type::fox) {
             Animal* a = pop.getByIndex(i);
@@ -105,7 +109,7 @@ void MainWindow::updateGrid(Grille g) {
             image.setPixel(a->getCoord().getCol(), a->getCoord().getRow(), cyan);
         }
     }
-    image = image.scaledToHeight(530, Qt::FastTransformation);
+    image = image.scaledToHeight(520, Qt::FastTransformation);
 
 
     scene = new QGraphicsScene(this);
@@ -181,7 +185,6 @@ void MainWindow::on_BtnSpeedUp_clicked()
             timer->start(timerTime);
         }
     }
-    qDebug() << timerTime;
 }
 
 
@@ -203,6 +206,5 @@ void MainWindow::on_BtnSpeedDown_clicked()
             timer->start(timerTime);
         }
     }
-    qDebug() << timerTime;
 }
 

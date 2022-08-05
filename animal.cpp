@@ -2,9 +2,11 @@
 #include <QDebug>
 
 Animal::Animal(Type t, int id, Coord c) {
+    age = 0;
     type = t;
     coord = c;
     Id = id;
+    FoodInit = 5;
 }
 
 QString Animal::toString() {
@@ -58,6 +60,17 @@ int Animal::getMinFreeBirthLapin() {
 int Animal::getFoodInit() {
     return FoodInit;
 }
+void Animal::setFoodInit(int f) {
+    FoodInit = f;
+    if(FoodInit > MaxFood) {
+        FoodInit = MaxFood;
+        return;
+    }
+    if(FoodInit < 0) {
+        FoodInit = 0;
+        return;
+    }
+}
 int Animal::getFoodLapin() {
     return FoodLapin;
 }
@@ -69,4 +82,15 @@ int Animal::getMaxFood() {
 }
 int Animal::getProbBirthRenard() {
     return ProbBirthRenard;
+}
+
+int Animal::getAge() {
+    return age;
+}
+void Animal::setAge(int a) {
+    age = a;
+}
+
+int Animal::getMaxAge() {
+    return maxAge;
 }

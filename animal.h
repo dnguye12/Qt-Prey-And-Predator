@@ -28,24 +28,31 @@ public:
 
 
     int getFoodInit();
+    void setFoodInit(int f);
     int getFoodLapin();
     int getFoodReprod();
     int getMaxFood();
     int getProbBirthRenard();
 
+    int getAge();
+    void setAge(int a);
+    int getMaxAge();
+
 private:
     Type type;
     Coord coord;
     int Id;
+    int age;
 
     int ProbBirthLapin = 30;
     int MinFreeBirthLapin = 4;
+    int maxAge = 20;
 
 
-    int FoodInit = 5;
+    int FoodInit;
     int FoodLapin = 5;
     int FoodReprod = 8;
-    int MaxFood = 10;
+    int MaxFood = 12;
     int ProbBirthRenard = 5;
 };
 

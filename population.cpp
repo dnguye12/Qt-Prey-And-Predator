@@ -5,7 +5,7 @@
 Population::Population()
 {
     pop = {};
-    for(int i = 0; i < 53 * 127; i++) {
+    for(int i = 0; i < 26 * 63; i++) {
         freeId.append(i);
     }
 }
@@ -72,6 +72,7 @@ void Population::del(int id) {
     for(int i = 0; i < pop.size(); i++) {
         if(pop[i]->getId() == id) {
             pop.removeAt(i);
+            freeId.append(id);
             return;
         }
     }

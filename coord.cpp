@@ -20,8 +20,8 @@ int Coord::getCol() {
 void Coord::setRow(int x) {
     if(x < 0) {
         row  = 0;
-    }else if(x > 52) {
-        row = 52;
+    }else if(x > 25) {
+        row = 25;
     }
     row = x;
 }
@@ -29,8 +29,8 @@ void Coord::setCol(int y) {
     if(y < 0) {
         col = 0;
     }
-    if(y > 126) {
-        col = 126;
+    if(y > 62) {
+        col = 62;
     }
     col = y;
 }
@@ -42,7 +42,7 @@ QVector<Coord> Coord::getVoisin() {
 
     for(int i = r - 1; i <= r+ 1; i++) {
         for(int j = c - 1; j <= c + 1; j++) {
-            if(i < 0 or j < 0 or i > 52 or j > 126) {
+            if(i < 0 or j < 0 or i > 25 or j > 62) {
                 continue;
             }else {
                 helper.append( *(new Coord(i, j)) );

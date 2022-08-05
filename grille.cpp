@@ -7,19 +7,19 @@
 
 Grille::Grille()  {
     QVector<Animal*> helper;
-    for(int i = 0; i < 127; i++) {
+    for(int i = 0; i < 63; i++) {
         helper.append((new Animal(Type::none, -1, *(new Coord(0,0)))));
     }
-    for(int i = 0; i < 53; i++) {
+    for(int i = 0; i < 26; i++) {
         map.append(helper);
     }
     srand(time(NULL));
-    for(int i = 0; i < 53; i++) {
-        for(int j = 0; j < 127; j++) {
+    for(int i = 0; i < 26; i++) {
+        for(int j = 0; j < 63; j++) {
             Animal* a = (new Animal(Type::none, -1, *(new Coord(i,j))));
             int rate = rand() % 100 + 1;
             if(rate <= a->getProbBirthLapin() + a->getProbBirthRenard()) {
-                if(pop.size() < 53 * 127) {
+                if(pop.size() < 26 * 63) {
                     if(rate <= a->getProbBirthLapin()) {
                         a->setType(Type::rabbit);
 
@@ -55,19 +55,6 @@ void Grille::setAnimalAtCoord(Coord c, Animal* a) {
 
 Population Grille::getPop() {
     return pop;
-}
-
-void Grille::debug() {
-    for(int i = 0; i < 53; i++) {
-        QString helper = "";
-        for(int j = 0; j < 127; j++) {
-            Animal* a = getAnimalAtCoord(i, j);
-            helper += a->toString();
-            helper += " ";
-        }
-        helper += "\n";
-        qDebug() << helper;
-    }
 }
 
 QVector<Animal*> Grille::voisinVide(Coord c) {
@@ -128,6 +115,7 @@ void Grille::updateGrille() {
     for(int i = 0; i < pop.size(); i++) {
         Animal* a = pop.getByIndex(i);
         if(a->getType() == Type::rabbit and not moved.contains(a->getId())) {
+            a->setAge(a->getAge() + 1);
             Coord c = a->getCoord();
             int id = a->getId();
             moved.append(id);
@@ -151,21 +139,77 @@ void Grille::updateGrille() {
                     setAnimalAtCoord(c, Type::none, -1);
                 }
 
-                continue;
-            }else {
-                continue;
+                //continue;
+            }
+            if(a->getAge() > a->getMaxAge()) {
+                setAnimalAtCoord(a->getCoord(), Type::none, -1);
+                pop.del(a->getId());
+
             }
         }else if(a->getType() == Type::fox and not moved.contains(a->getId())) {
+            a->setAge(a->getAge() + 1);
+            a->setFoodInit(a->getFoodInit() - 1);
             Coord c = a->getCoord();
             int id = a->getId();
             moved.append(id);
             QVector<Animal*> cVide = voisinVide(c);
-            if(cVide.size() > 0) {
+            QVector<Animal*> rVide = voisinRab(c);
+            QVector<Animal *> fVide = voisinFox(c);
+
+            if(rVide.size() > 0) {
+                int choice = rand() % (rVide.size());
+                Animal* rab = rVide[choice];
+                setAnimalAtCoord(rab->getCoord(), Type::none, -1);
+                pop.del(rab->getId());
+                pop.changeCoord(id, rVide[choice]->getCoord());
+                setAnimalAtCoord(a->getCoord(), a);
+                a->setFoodInit(a->getFoodInit() + a->getFoodLapin() + 1);
+
+                if(a->getFoodInit() >= a->getFoodReprod() and fVide.size() > 0) {
+
+                    int choiceFox = rand() % 100 + 1;
+                    if(choiceFox <= a->getProbBirthRenard()) {
+                        int nId = pop.getFreeId();
+                        moved.append(nId);
+                        setAnimalAtCoord(c, Type::fox, nId);
+                    }else {
+                        setAnimalAtCoord(c, Type::none, -1);
+                    }
+
+                }else {
+                    setAnimalAtCoord(c, Type::none, -1);
+                }
+            }
+            if(cVide.size() > 0 and rVide.size() == 0) {
                 int choice = rand() % (cVide.size());
                 pop.changeCoord(id, cVide[choice]->getCoord());
                 setAnimalAtCoord(c, Type::none, -1);
                 setAnimalAtCoord(a->getCoord(), a);
-            }else {
+
+                if(a->getFoodInit() >= a->getFoodReprod() and fVide.size() > 0) {
+
+                    int choiceFox = rand() % 100 + 1;
+                    if(choiceFox <= a->getProbBirthRenard()) {
+                        int nId = pop.getFreeId();
+                        moved.append(nId);
+                        setAnimalAtCoord(c, Type::fox, nId);
+                    }else {
+                        setAnimalAtCoord(c, Type::none, -1);
+                    }
+
+                }else {
+                    setAnimalAtCoord(c, Type::none, -1);
+                }
+
+            }
+            if(a->getAge() > a->getMaxAge()) {
+                setAnimalAtCoord(a->getCoord(), Type::none, -1);
+                pop.del(a->getId());
+                continue;
+            }
+            if(a->getFoodInit() <= 0) {
+                setAnimalAtCoord(a->getCoord(), Type::none, -1);
+                pop.del(a->getId());
                 continue;
             }
         }
