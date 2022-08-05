@@ -19,7 +19,11 @@ public:
 
     int reserve();
 
+    int getFreeId();
+
     int set(Type t, Coord c);
+
+    void addAnimal(Coord c, Type t, int idx);
 
     void del(int id);
 

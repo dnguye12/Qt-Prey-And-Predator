@@ -45,10 +45,12 @@ Animal* Grille::getAnimalAtCoord(Coord c) {
 
 void Grille::setAnimalAtCoord(Coord c, Type t, int idx) {
     map[c.getRow()][c.getCol()] = (new Animal(t,idx,  c));
+    pop.addAnimal(c,t, idx);
 }
 
 void Grille::setAnimalAtCoord(Coord c, Animal* a) {
     map[c.getRow()][c.getCol()] = a;
+    pop.addAnimal(c, a->getType(), a->getId());
 }
 
 Population Grille::getPop() {
@@ -130,13 +132,26 @@ void Grille::updateGrille() {
             int id = a->getId();
             moved.append(id);
             QVector<Animal*> cVide = voisinVide(c);
+            QVector<Animal*> rVide = voisinRab(c);
             if(cVide.size() > 0) {
                 int choice = rand() % (cVide.size());
                 pop.changeCoord(id, cVide[choice]->getCoord());
-                //a = pop.getByIndex(i);
-                //a->setCoord(cVide[choice]->getCoord());
-                setAnimalAtCoord(c, Type::none, -1);
-                setAnimalAtCoord(a->getCoord(), a);
+                setAnimalAtCoord(cVide[choice]->getCoord(), a);
+                if(rVide.size() >= a->getMinFreeBirthLapin()) {
+                    int choiceRabbit = rand() % 100 + 1;
+                    if(choiceRabbit <= a->getProbBirthLapin()) {
+                        int nId = pop.getFreeId();
+                        moved.append(nId);
+                        setAnimalAtCoord(c, Type::rabbit, nId);
+                    }else {
+                        setAnimalAtCoord(c, Type::none, -1);
+                    }
+
+                }else {
+                    setAnimalAtCoord(c, Type::none, -1);
+                }
+
+                continue;
             }else {
                 continue;
             }
@@ -148,8 +163,6 @@ void Grille::updateGrille() {
             if(cVide.size() > 0) {
                 int choice = rand() % (cVide.size());
                 pop.changeCoord(id, cVide[choice]->getCoord());
-                //a = pop.getByIndex(i);
-                //a->setCoord(cVide[choice]->getCoord());
                 setAnimalAtCoord(c, Type::none, -1);
                 setAnimalAtCoord(a->getCoord(), a);
             }else {

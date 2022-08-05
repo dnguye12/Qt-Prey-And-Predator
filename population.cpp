@@ -50,6 +50,13 @@ int Population::reserve() {
     return idx;
 }
 
+int Population::getFreeId() {
+    if(freeId.size() == 0) {
+        return -1;
+    }
+    return freeId[0];
+}
+
 int Population::set(Type t, Coord c) {
     int idx = reserve();
     if(idx == -1) {
@@ -77,5 +84,14 @@ void Population::changeCoord(int id, Coord c) {
     }else {
         a->setCoord(c.getRow(), c.getCol());
     }
+}
+
+void Population::addAnimal(Coord c, Type t, int idx) {
+    if(freeId.contains(idx)) {
+    Animal* a = new Animal(t, idx, c);
+    pop.append(a);
+    freeId.removeAt(freeId.indexOf(idx));
+    }
+
 }
 
