@@ -115,6 +115,40 @@
         </widget>
        </item>
        <item>
+        <widget class="QToolButton" name="BtnSpeedUp">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources.qrc">
+           <normaloff>:/images/Square Buttons/Down Square Button.png</normaloff>:/images/Square Buttons/Down Square Button.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>60</width>
+           <height>60</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="BtnSpeedDown">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="resources.qrc">
+           <normaloff>:/images/Square Buttons/Up Square Button.png</normaloff>:/images/Square Buttons/Up Square Button.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>60</width>
+           <height>60</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QToolButton" name="BtnRestart">
          <property name="minimumSize">
           <size>

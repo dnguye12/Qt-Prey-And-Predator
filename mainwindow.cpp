@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     timerTime = 0;
     oldTimerTime = timerTime;
+    minSpeed= true;
     connect(timer, &QTimer::timeout, this, &MainWindow::updateDisplay);
 
     QScreen *screen = ui->centralwidget->screen();
@@ -30,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     }else {
         move(  (swidth - width) / 2 ,(sheight - height) / 2 );
     }
-    ui->BtnPause->setToolTip("Start The Simulation");
     initBoard();
 }
 
@@ -119,6 +119,11 @@ void MainWindow::updateGrid(Grille g) {
     ui->FoxPop->setText("Fox Population: " + QString::number(popCount.second));
 }
 
+void MainWindow::updateDisplay() {
+    g.updateGrille();
+    updateGrid(g);
+}
+
 
 void MainWindow::on_BtnQuit_clicked()
 {
@@ -133,11 +138,7 @@ void MainWindow::on_BtnRestart_clicked()
     paused = true;
     timerTime = 2147483647;
     timer->start(timerTime);
-}
-
-void MainWindow::updateDisplay() {
-    g.updateGrille();
-    updateGrid(g);
+    ui->BtnPause->setIcon(QIcon(":/images/Square Buttons/Play Square Button.png"));
 }
 
 
@@ -149,7 +150,6 @@ void MainWindow::on_BtnPause_clicked()
         timer->start(timerTime);
 
         ui->BtnPause->setIcon(QIcon(":/images/Square Buttons/Play Square Button.png"));
-        ui->BtnPause->setToolTip("Resume The Simulation");
         return;
     }else {
         paused = false;
@@ -157,9 +157,52 @@ void MainWindow::on_BtnPause_clicked()
         timer->start(timerTime);
 
         ui->BtnPause->setIcon(QIcon(":/images/Square Buttons/Pause Square Button.png"));
-        ui->BtnPause->setToolTip("Pause The Simulation");
         return;
     }
 
+}
+
+
+void MainWindow::on_BtnSpeedUp_clicked()
+{
+    if(not minSpeed) {
+        oldTimerTime -= 250;
+        if(maxSpeed) {
+            maxSpeed = false;
+            ui->BtnSpeedDown->setIcon(QIcon(":/images/Square Buttons/Up Square Button.png"));
+        }
+        if(oldTimerTime <= 0) {
+            oldTimerTime = 0;
+            minSpeed = true;
+            ui->BtnSpeedUp->setIcon(QIcon(":/images/Square Buttons/X Square Button.png"));
+        }
+        timerTime = oldTimerTime;
+        if(not paused) {
+            timer->start(timerTime);
+        }
+    }
+    qDebug() << timerTime;
+}
+
+
+void MainWindow::on_BtnSpeedDown_clicked()
+{
+    if(not maxSpeed) {
+        oldTimerTime += 250;
+        if(minSpeed) {
+            minSpeed = false;
+            ui->BtnSpeedUp->setIcon(QIcon(":/images/Square Buttons/Down Square Button.png"));
+        }
+        if(oldTimerTime >= 2500) {
+            oldTimerTime = 2500;
+            maxSpeed = true;
+            ui->BtnSpeedDown->setIcon(QIcon(":/images/Square Buttons/X Square Button.png"));
+        }
+        timerTime = oldTimerTime;
+        if(not paused) {
+            timer->start(timerTime);
+        }
+    }
+    qDebug() << timerTime;
 }
 

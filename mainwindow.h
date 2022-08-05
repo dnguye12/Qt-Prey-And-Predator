@@ -33,10 +33,16 @@ private slots:
 
     void updateDisplay();
 
+    void on_BtnSpeedUp_clicked();
+
+    void on_BtnSpeedDown_clicked();
+
 private:
     Ui::MainWindow *ui;
     Grille g;
     bool paused = true;
+    bool minSpeed = false;
+    bool maxSpeed = false;
     int timerTime;
     int oldTimerTime;
     QTimer *timer = new QTimer(this);
