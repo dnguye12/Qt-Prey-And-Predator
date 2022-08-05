@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QLineSeries>
 #include "grille.h"
 
 #include <QTimer>
@@ -23,6 +24,10 @@ public:
     void initBoard();
 
     void updateGrid(Grille g);
+
+    void initGraph(Grille g);
+
+    void updateGraph(Grille g);
 
 private slots:
     void on_BtnQuit_clicked();
@@ -46,5 +51,8 @@ private:
     int timerTime;
     int oldTimerTime;
     QTimer *timer = new QTimer(this);
+
+    QLineSeries *rabLine;
+    QLineSeries *foxLine;
 };
 #endif // MAINWINDOW_H

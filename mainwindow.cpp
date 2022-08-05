@@ -4,6 +4,8 @@
 #include <QPushButton>
 #include <QSizePolicy>
 #include <QScreen>
+#include <QChart>
+#include <QChartView>
 
 
 #include <grille.h>
@@ -32,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
     }else {
         move(  (swidth - width) / 2 ,(sheight - height) / 2 );
     }
-    initBoard();
+    //initBoard();
+    initGraph(g);
 }
 
 MainWindow::~MainWindow()
@@ -76,9 +79,6 @@ void MainWindow::initBoard() {
 
     ui->graphicsView->setScene(scene);
 
-    QPair<int,int> popCount = g.popCount();
-    ui->RabPop->setText("Rabbit Population: " + QString::number(popCount.first));
-    ui->FoxPop->setText("Fox Population: " + QString::number(popCount.second));
 }
 
 void MainWindow::updateGrid(Grille g) {
@@ -117,10 +117,32 @@ void MainWindow::updateGrid(Grille g) {
     scene->setSceneRect(image.rect());
 
     ui->graphicsView->setScene(scene);
+}
 
-    QPair<int,int> popCount = g.popCount();
-    ui->RabPop->setText("Rabbit Population: " + QString::number(popCount.first));
-    ui->FoxPop->setText("Fox Population: " + QString::number(popCount.second));
+void MainWindow::initGraph(Grille g) {
+    rabLine->append(0, 6);
+    rabLine->append(2, 4);
+    rabLine->append(3, 8);
+    rabLine->append(7, 4);
+    rabLine->append(10, 5);
+
+    QChart *chart = new QChart();
+    chart->legend()->hide();
+    chart->addSeries(rabLine);
+    chart->createDefaultAxes();
+    chart->setTitle("Simple line chart example");
+
+    QGraphicsScene * helper = new QGraphicsScene(this);
+    //QChartView *chartView = new QChartView(chart);
+    //chartView->setRenderHint(QPainter::Antialiasing);
+
+    helper->addItem(chart);
+    helper->setSceneRect(chart->rect());
+    ui->popChart->setScreen(helper);
+}
+
+void MainWindow::updateGraph(Grille g) {
+
 }
 
 void MainWindow::updateDisplay() {
