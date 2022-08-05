@@ -17,6 +17,8 @@ public:
     void setAnimalAtCoord(Coord c, Type t, int idx);
     void setAnimalAtCoord(Coord c, Animal* a);
 
+    Population getPop();
+
     QVector<Animal*> voisinVide(Coord c);
     QVector<Animal*> voisinRab(Coord c);
     QVector<Animal*> voisinFox(Coord c);

@@ -51,6 +51,10 @@ void Grille::setAnimalAtCoord(Coord c, Animal* a) {
     map[c.getRow()][c.getCol()] = a;
 }
 
+Population Grille::getPop() {
+    return pop;
+}
+
 void Grille::debug() {
     for(int i = 0; i < 53; i++) {
         QString helper = "";

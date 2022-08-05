@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     }else {
         move(  (swidth - width) / 2 ,(sheight - height) / 2 );
     }
+    ui->BtnPause->setToolTip("Start The Simulation");
     initBoard();
 }
 
@@ -40,25 +41,39 @@ MainWindow::~MainWindow()
 
 void MainWindow::initBoard() {
     g = Grille();
-    for(int i = 0; i < 53; i++) {
-        for(int j = 0; j < 127; j++) {
-            QPushButton *cell = new QPushButton("");
-            cell->setEnabled(false);
-            cell->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-            cell->setMaximumSize(10,10);
-            if(g.getAnimalAtCoord(i, j)->getType() == Type::fox) {
-                cell->setStyleSheet("background-color: red;"
-                                    "border: none;");
-            } else if(g.getAnimalAtCoord(i, j)->getType() == Type::rabbit) {
-                cell->setStyleSheet("background-color: cyan;"
-                                    "border: none;");
-            }else {
-                cell->setStyleSheet("background-color: rgb(40, 40, 40);"
-                                    "border: none;");
-            }
-            ui->gridLayout->addWidget(cell, i, j, 1, 1);
+
+    QGraphicsScene *scene;
+    QImage image(127, 53, QImage::Format_RGB32);
+    QRgb red;
+    QRgb cyan;
+    QRgb black;
+
+
+    red = QColor("red").rgb();
+    cyan = QColor("cyan").rgb();
+    black = QColor("black").rgb();
+    image.fill(black);
+    Population pop = g.getPop();
+
+    for(int i = 0; i < pop.size(); i++) {
+        if(pop.getByIndex(i)->getType() == Type::fox) {
+            Animal* a = pop.getByIndex(i);
+            image.setPixel(a->getCoord().getCol(), a->getCoord().getRow(), red);
+        }
+
+        if(pop.getByIndex(i)->getType() == Type::rabbit) {
+            Animal* a = pop.getByIndex(i);
+            image.setPixel(a->getCoord().getCol(), a->getCoord().getRow(), cyan);
         }
     }
+    image = image.scaledToHeight(530, Qt::FastTransformation);
+
+
+    scene = new QGraphicsScene(this);
+    scene->addPixmap(QPixmap::fromImage(image));
+    scene->setSceneRect(image.rect());
+
+    ui->graphicsView->setScene(scene);
 
     QPair<int,int> popCount = g.popCount();
     ui->RabPop->setText("Rabbit Population: " + QString::number(popCount.first));
@@ -66,26 +81,42 @@ void MainWindow::initBoard() {
 }
 
 void MainWindow::updateGrid(Grille g) {
-    for(int i = 0; i < 53; i++) {
-        for(int j = 0; j < 127; j++) {
-            QLayoutItem *item = ui->gridLayout->itemAtPosition(i,j);
-            QWidget* widget = item->widget();
-            QPushButton* cell = dynamic_cast<QPushButton*>(widget);
-            if(g.getAnimalAtCoord(i, j)->getType() == Type::fox) {
-                cell->setStyleSheet("background-color: red;"
-                                    "border: none;");
-            } else if(g.getAnimalAtCoord(i, j)->getType() == Type::rabbit) {
-                cell->setStyleSheet("background-color: cyan;"
-                                    "border: none;");
-            }else {
-                cell->setStyleSheet("background-color: rgb(40, 40, 40);"
-                                    "border: none;");
-            }
+    QGraphicsScene *scene;
+    QImage image(127, 53, QImage::Format_RGB32);
+    QRgb red;
+    QRgb cyan;
+    QRgb black;
+
+
+    red = QColor("red").rgb();
+    cyan = QColor("cyan").rgb();
+    black = QColor("black").rgb();
+    image.fill(black);
+    Population pop = g.getPop();
+
+    for(int i = 0; i < pop.size(); i++) {
+        if(pop.getByIndex(i)->getType() == Type::fox) {
+            Animal* a = pop.getByIndex(i);
+            image.setPixel(a->getCoord().getCol(), a->getCoord().getRow(), red);
+        }
+
+        if(pop.getByIndex(i)->getType() == Type::rabbit) {
+            Animal* a = pop.getByIndex(i);
+            image.setPixel(a->getCoord().getCol(), a->getCoord().getRow(), cyan);
         }
     }
+    image = image.scaledToHeight(530, Qt::FastTransformation);
+
+
+    scene = new QGraphicsScene(this);
+    scene->addPixmap(QPixmap::fromImage(image));
+    scene->setSceneRect(image.rect());
+
+    ui->graphicsView->setScene(scene);
+
     QPair<int,int> popCount = g.popCount();
-    ui->RabPop->setText(QString("Rabbit Population: " + QString::number(popCount.first)));
-    ui->FoxPop->setText(QString("Fox Population: " + QString::number(popCount.second)));
+    ui->RabPop->setText("Rabbit Population: " + QString::number(popCount.first));
+    ui->FoxPop->setText("Fox Population: " + QString::number(popCount.second));
 }
 
 
@@ -99,6 +130,9 @@ void MainWindow::on_BtnRestart_clicked()
 {
     g = Grille();
     updateGrid(g);
+    paused = true;
+    timerTime = 2147483647;
+    timer->start(timerTime);
 }
 
 void MainWindow::updateDisplay() {
@@ -113,11 +147,18 @@ void MainWindow::on_BtnPause_clicked()
         paused = true;
         timerTime = 2147483647;
         timer->start(timerTime);
+
+        ui->BtnPause->setIcon(QIcon(":/images/Square Buttons/Play Square Button.png"));
+        ui->BtnPause->setToolTip("Resume The Simulation");
         return;
     }else {
         paused = false;
         timerTime = oldTimerTime;
         timer->start(timerTime);
+
+        ui->BtnPause->setIcon(QIcon(":/images/Square Buttons/Pause Square Button.png"));
+        ui->BtnPause->setToolTip("Pause The Simulation");
+        return;
     }
 
 }
