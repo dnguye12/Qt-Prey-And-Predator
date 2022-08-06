@@ -8,5 +8,7 @@
         <file>Square Buttons/Down Square Button.png</file>
         <file>Square Buttons/Up Square Button.png</file>
         <file>Square Buttons/X Square Button.png</file>
+        <file>Large Buttons/Play Button.png</file>
+        <file>Large Buttons/Quit Button.png</file>
     </qresource>
 </RCC>

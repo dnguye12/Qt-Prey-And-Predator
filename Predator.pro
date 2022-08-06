@@ -14,6 +14,7 @@ SOURCES += \
     coord.cpp \
     grille.cpp \
     main.cpp \
+    mainmenu.cpp \
     mainwindow.cpp \
     population.cpp
 
@@ -21,10 +22,12 @@ HEADERS += \
     animal.h \
     coord.h \
     grille.h \
+    mainmenu.h \
     mainwindow.h \
     population.h
 
 FORMS += \
+    mainmenu.ui \
     mainwindow.ui
 
 RC_ICONS += icon.ico
