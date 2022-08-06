@@ -9,6 +9,7 @@
 #include <QCategoryAxis>
 
 
+
 #include <grille.h>
 
 
@@ -35,9 +36,11 @@ MainWindow::MainWindow(QWidget *parent)
     }else {
         move(  (swidth - width) / 2 ,(sheight - height) / 2 );
     }
+
     initBoard();
     initGraph();
 }
+
 
 MainWindow::~MainWindow()
 {

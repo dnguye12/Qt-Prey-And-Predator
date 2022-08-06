@@ -21,6 +21,8 @@ public:
 
 
     //functions
+
+
     void initBoard();
 
     void updateGrid(Grille g);

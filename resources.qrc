@@ -11,4 +11,7 @@
         <file>Large Buttons/Play Button.png</file>
         <file>Large Buttons/Quit Button.png</file>
     </qresource>
+    <qresource prefix="/music">
+        <file>music.mp3</file>
+    </qresource>
 </RCC>
