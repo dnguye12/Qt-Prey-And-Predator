@@ -25,9 +25,11 @@ public:
 
     void updateGrid(Grille g);
 
-    void initGraph(Grille g);
+    void updateLineSeries();
 
-    void updateGraph(Grille g);
+    void initGraph();
+
+    void updateGraph();
 
 private slots:
     void on_BtnQuit_clicked();
@@ -52,7 +54,8 @@ private:
     int oldTimerTime;
     QTimer *timer = new QTimer(this);
 
-    QLineSeries *rabLine;
-    QLineSeries *foxLine;
+    QLineSeries *rabLine = new QLineSeries();
+    QLineSeries *foxLine = new QLineSeries();
+    int lineRemoved = 0;
 };
 #endif // MAINWINDOW_H

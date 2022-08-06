@@ -50,7 +50,7 @@ private:
 
 
     int FoodInit;
-    int FoodLapin = 5;
+    int FoodLapin = 8;
     int FoodReprod = 8;
     int MaxFood = 12;
     int ProbBirthRenard = 5;

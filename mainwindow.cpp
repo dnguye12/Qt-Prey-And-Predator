@@ -6,6 +6,7 @@
 #include <QScreen>
 #include <QChart>
 #include <QChartView>
+#include <QCategoryAxis>
 
 
 #include <grille.h>
@@ -34,8 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     }else {
         move(  (swidth - width) / 2 ,(sheight - height) / 2 );
     }
-    //initBoard();
-    initGraph(g);
+    initBoard();
+    initGraph();
 }
 
 MainWindow::~MainWindow()
@@ -119,35 +120,50 @@ void MainWindow::updateGrid(Grille g) {
     ui->graphicsView->setScene(scene);
 }
 
-void MainWindow::initGraph(Grille g) {
-    rabLine->append(0, 6);
-    rabLine->append(2, 4);
-    rabLine->append(3, 8);
-    rabLine->append(7, 4);
-    rabLine->append(10, 5);
+void MainWindow::updateLineSeries() {
+    QPair<int, int> popCount = g.popCount();
+
+    rabLine->append(rabLine->count(), popCount.first);
+    foxLine->append(foxLine->count(), popCount.second);
+
+}
+
+void MainWindow::initGraph() {
+
+
+    updateLineSeries();
 
     QChart *chart = new QChart();
     chart->legend()->hide();
+
     chart->addSeries(rabLine);
+    chart->addSeries(foxLine);
     chart->createDefaultAxes();
     chart->setTitle("Simple line chart example");
 
-    QGraphicsScene * helper = new QGraphicsScene(this);
-    //QChartView *chartView = new QChartView(chart);
-    //chartView->setRenderHint(QPainter::Antialiasing);
+    //chart->setTheme(QChart::ChartThemeDark);
+    QPen rabPen(QColor("cyan").rgb());
+    rabPen.setWidth(3);
+    rabLine->setPen(rabPen);
 
-    helper->addItem(chart);
-    helper->setSceneRect(chart->rect());
-    ui->popChart->setScreen(helper);
+    QPen foxPen(QColor("red").rgb());
+    foxPen.setWidth(3);
+    foxLine->setColor(Qt::red);
+    chart->setBackgroundBrush(QBrush(QColor("black")));
+
+    ui->charts->setChart(chart);
+    ui->charts->setStyleSheet("color: white;");
+    ui->charts->setRenderHint(QPainter::Antialiasing);
 }
 
-void MainWindow::updateGraph(Grille g) {
+void MainWindow::updateGraph() {
 
 }
 
 void MainWindow::updateDisplay() {
     g.updateGrille();
     updateGrid(g);
+    initGraph();
 }
 
 
@@ -165,6 +181,9 @@ void MainWindow::on_BtnRestart_clicked()
     timerTime = 2147483647;
     timer->start(timerTime);
     ui->BtnPause->setIcon(QIcon(":/images/Square Buttons/Play Square Button.png"));
+
+    rabLine->removePoints(0, rabLine->count());
+    foxLine->removePoints(0, foxLine->count());
 }
 
 
