@@ -9,7 +9,6 @@
 #include <QCategoryAxis>
 
 
-
 #include <grille.h>
 
 
@@ -37,6 +36,16 @@ MainWindow::MainWindow(QWidget *parent)
         move(  (swidth - width) / 2 ,(sheight - height) / 2 );
     }
 
+music = new QMediaPlayer();
+aO = new QAudioOutput;
+    music->setAudioOutput(aO);
+    music->setLoops(10);
+     //connect(music, &QMediaPlayer::mediaStatusChanged, this, &MainWindow::playMusic);
+     music->setSource(QUrl("qrc:/music/music.mp3"));
+       aO->setVolume(1);
+       music->play();
+       qDebug() << music->loops();
+
     initBoard();
     initGraph();
 }
@@ -45,6 +54,15 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::playMusic() {
+    QMediaPlayer *music = new QMediaPlayer();
+    QAudioOutput *aO = new QAudioOutput;
+    music->setAudioOutput(aO);
+    music->setSource(QUrl("qrc:/music/music.mp3"));
+    aO->setVolume(1);
+    music->play();
 }
 
 void MainWindow::initBoard() {

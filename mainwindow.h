@@ -6,6 +6,8 @@
 #include "grille.h"
 
 #include <QTimer>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -46,6 +48,8 @@ private slots:
 
     void on_BtnSpeedDown_clicked();
 
+    void playMusic();
+
 private:
     Ui::MainWindow *ui;
     Grille g;
@@ -59,5 +63,8 @@ private:
     QLineSeries *rabLine = new QLineSeries();
     QLineSeries *foxLine = new QLineSeries();
     int lineRemoved = 0;
+
+    QMediaPlayer *music;
+     QAudioOutput *aO;
 };
 #endif // MAINWINDOW_H
