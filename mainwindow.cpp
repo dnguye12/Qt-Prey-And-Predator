@@ -137,14 +137,13 @@ void MainWindow::initGraph() {
     updateLineSeries();
 
     QChart *chart = new QChart();
-    chart->legend()->hide();
 
+    rabLine->setName("Rabbit Population");
+    foxLine->setName("Fox Population");
     chart->addSeries(rabLine);
     chart->addSeries(foxLine);
-    chart->createDefaultAxes();
     chart->setTitle("Simple line chart example");
 
-    //chart->setTheme(QChart::ChartThemeDark);
     QPen rabPen(QColor("cyan").rgb());
     rabPen.setWidth(3);
     rabLine->setPen(rabPen);
@@ -154,13 +153,49 @@ void MainWindow::initGraph() {
     foxLine->setColor(Qt::red);
     chart->setBackgroundBrush(QBrush(QColor("black")));
 
+
+
+    QCategoryAxis *axisX = new QCategoryAxis();
+    QCategoryAxis *axisY = new QCategoryAxis();
+
+    QFont labelsFont;
+    labelsFont.setPixelSize(12);
+    axisX->setLabelsFont(labelsFont);
+    axisY->setLabelsFont(labelsFont);
+
+    QPen axisPen(QColor("white").rgb());
+    axisPen.setWidth(2);
+    axisX->setLinePen(axisPen);
+    axisY->setLinePen(axisPen);
+
+    QBrush axisBrush(Qt::white);
+    axisX->setLabelsBrush(axisBrush);
+    axisY->setLabelsBrush(axisBrush);
+
+    axisX->setRange(0, (double)rabLine->count());
+
+    axisY->append("0", 0);
+    axisY->append("409", 409);
+    axisY->append("819", 819);
+    axisY->append("1227", 1227);
+    axisY->append("1638", 1638);
+    axisY->setRange(0, 1638);
+
+    chart->addAxis(axisX, Qt::AlignBottom);
+    chart->addAxis(axisY, Qt::AlignLeft);
+    rabLine->attachAxis(axisX);
+    rabLine->attachAxis(axisY);
+    foxLine->attachAxis(axisX);
+    foxLine->attachAxis(axisY);
+
+    chart->legend()->setVisible(true);
+    chart->legend()->setLabelColor(Qt::white);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+
+
+
     ui->charts->setChart(chart);
-    ui->charts->setStyleSheet("color: white;");
     ui->charts->setRenderHint(QPainter::Antialiasing);
-}
-
-void MainWindow::updateGraph() {
-
 }
 
 void MainWindow::updateDisplay() {

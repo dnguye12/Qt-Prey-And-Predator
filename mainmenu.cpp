@@ -40,6 +40,5 @@ void MainMenu::on_pushButton_clicked()
     MainWindow *w = new MainWindow();
     w->show();
     this->hide();
-    //close();
 }
 
